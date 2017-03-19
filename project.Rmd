@@ -1,0 +1,41 @@
+---
+title: "House Price by States"
+author: "TH"
+date: "March 19, 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Task
+Create a web page using R Markdown that features a map created with Leaflet.
+
+Host your webpage on either GitHub Pages, RPubs, or NeoCities.
+
+Your webpage must contain the date that you created the document, and it must contain a map created with Leaflet. We would love to see you show off your creativity!
+
+## Collect data
+The data are from two sources:
+1. Home prices by state is from trulia (https://www.trulia.com/home_prices/)
+2. State Area Measurements and Internal Point Coordinates is from (https://www.census.gov/geo/reference/state-area.html)
+
+
+## Visualize data using leaflet
+Home price by state plot is created using leaflet, and radius of each circle is proportional to listing price.
+```{r, warning=FALSE}
+library(leaflet)
+setwd('D:/Dropbox/E-books/_Coursera/9_Developing_Data_Products/Week2')
+housing_df <- read.csv('house_listing_price.csv', header = TRUE, stringsAsFactors = FALSE)
+head(housing_df)
+
+my_map <- housing_df %>%
+    leaflet() %>%
+    addTiles() %>%
+    addCircles(lat=housing_df$Lat, lng=housing_df$Long, 
+              weight = 1, radius = (housing_df$Average.Listing.Price)/2, 
+              popup = strwrap(housing_df$Average.Listing.Price))
+my_map
+```
+
